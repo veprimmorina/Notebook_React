@@ -27,29 +27,42 @@ const categorize = () => {
   return (
    <Card className='shadow-lg'>
     <Card.Body>
-    <p className='note-lead'>My Note</p>
-  {!categorizeButton && <p className='lead'>Category / {search != undefined ? search : "All"}</p>}
-  { categorizeButton && <Button variant='warning' onClick={()=>categorize()}>Categorize</Button>}
+     <p className='note-lead'>My Note</p>
+     {!categorizeButton && <p className='lead'>Category / {search != undefined ? search : "All"}</p>}
+     { categorizeButton && <Button variant='warning' onClick={()=>categorize()}>Categorize</Button>}
 
-  
-  { search==undefined  ? <> 
-  <p className='text-center note-lead'>School Category</p><table className='table table-dark shadow'>
-    {school!="" ? <TableHeader /> : ""}
-  {school.map((note)=> <NotesTable key={note.noteId} note={note}/>)}
-  </table>
-  <p className='mt-4 text-center note-lead'>Metting Category</p>
-  <table className='table table-dark shadow'>{metting!="" ? <TableHeader />: ""}
- {metting.map((note)=> <NotesTable key={note.noteId} note={note}/>)}
-  </table>
-  <p className='text-center note-lead'>Other Category</p>
-  <table className='table table-dark shadow'>{other!="" ? <TableHeader />: ""}
- {other.map((note)=> <NotesTable key={note.noteId} note={note} />)}
-  </table>
-  </>:<><table className='table table-dark shadow'>
-  <TableHeader />
-   {notes.map((note)=>(note.category==search ? <NotesTable key={note.noteId} note={note} />: ""))}</table></>}
-    </Card.Body>
-    </Card>
+     { search==undefined  ? <> 
+     <p className='text-center note-lead'>School Category</p>
+     <table className='table table-dark shadow'>
+     {school!="" ? <TableHeader /> : ""}
+     {
+     school.map((note)=> 
+     <NotesTable key={note.noteId} note={note}/>
+     )}
+
+     </table>
+     <p className='mt-4 text-center note-lead'>Metting Category</p>
+    <table className='table table-dark shadow'>
+      {metting!="" ? <TableHeader />: ""}
+      {metting.map((note)=> 
+      <NotesTable key={note.noteId} note={note}/>
+    )}
+    </table>
+    <p className='text-center note-lead'>Other Category</p>
+    <table className='table table-dark shadow'>
+    {other!="" ? <TableHeader />: ""}
+    {other.map((note)=> 
+    <NotesTable key={note.noteId} note={note} />
+    )}
+    </table>
+    </>:<><table className='table table-dark shadow'>
+    <TableHeader />
+    {notes.map((note)=>
+    (note.category==search ? <NotesTable key={note.noteId} note={note} />: ""
+    ))}
+    </table></>}
+   </Card.Body>
+  </Card>
   )
 }
 
