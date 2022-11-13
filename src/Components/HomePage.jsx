@@ -5,6 +5,7 @@ import 'react-bootstrap-icons';
 import MyNote from './MyNote';
 import Header from './Header';
 import Footer from './Footer';
+import Note from './Note';
 
 function HomePage() {
   
@@ -56,12 +57,7 @@ const getCategory = (val) =>{
     window.location.href='http://localhost:3000';
   }
  }
- const handleDelete = (note)=>{
-  const deleted = notes.filter((t)=>t.noteId !== note.noteId);
-  setNotes(deleted);
-  localStorage.setItem("localNotes", JSON.stringify(deleted))
-  window.location.href='http://localhost:3000';
-}
+ 
 
  useEffect(()=>{
   if(localStorage.getItem("localNotes")){
@@ -82,18 +78,14 @@ const getCategory = (val) =>{
     <div className='col-lg-3 '>
     <Card className='shadow-lg all-notes'>
         <Card.Body className='note-body'>
-        <input type="search" id='note-search' placeHolder="Search for category" onChange={getData}/>
+        <input type="search" id='note-search' placeholder="Search for category" onChange={getData}/>
     <Button variant='primary' onClick={()=>searchData()}><i className="bi bi-search">Search</i></Button>
     <i>*Metting, School, or specific category of 'other' value</i>
     <p className='mt-4 pt-1 note-lead'>All Notes - {notes.length == 0 ? "Currently no note!" : notes.length==1 ? "You have 1 note" : "You have "+notes.length+" notes"}</p>
     
-    {notes.map((note) => (
-            <>
-            <Card className='mt-4 shadow'>
-            <Card.Header className='text-center text-primary colored'>Title:{note.title}</Card.Header>
-            <Card.Text className='text-center'>{note.description} </Card.Text>
-             <Card.Footer> <div className='d-flex justify-content-between text-muted'><p>Category: {note.category}</p><p>{note.noteData}</p></div></Card.Footer>
-              <Button variant='danger' className='text-center' onClick={()=>handleDelete(note)}>Delete</Button></Card></>))}
+    {notes.map((note) => 
+            <Note note={note} key={note.noteId}/>)
+            }
             
               
         </Card.Body>
@@ -147,3 +139,4 @@ const getCategory = (val) =>{
 }
 
 export default HomePage
+
