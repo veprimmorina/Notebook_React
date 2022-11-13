@@ -78,18 +78,15 @@ const getCategory = (val) =>{
     <div className='col-lg-3 '>
     <Card className='shadow-lg all-notes'>
         <Card.Body className='note-body'>
-        <input type="search" id='note-search' placeholder="Search for category" onChange={getData}/>
+        <input type="search" id='note-search' placeholder="Search for category" size='16' onChange={getData}/>
     <Button variant='primary' onClick={()=>searchData()}><i className="bi bi-search">Search</i></Button>
-    <i>*Metting, School, or specific category of 'other' value</i>
+    <p><i>*Metting, School, or specific category of 'other' value</i></p>
     <p className='mt-4 pt-1 note-lead'>All Notes - {notes.length == 0 ? "Currently no note!" : notes.length==1 ? "You have 1 note" : "You have "+notes.length+" notes"}</p>
     
     {notes.map((note) => 
             <Note note={note} key={note.noteId}/>)
-            }
-            
-              
+            }  
         </Card.Body>
-    
     </Card>
     </div>
     <div className='col-lg-9 mt-4 mt-lg-0' >
