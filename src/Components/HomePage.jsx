@@ -18,6 +18,7 @@ function HomePage() {
    const [note, setNote] = useState("");
    const [notes, setNotes] = useState([]);
    const [successMessage, setSuccessMessage] = useState();
+   const [errorMessage, setErrorMessage] = useState();
     var newDate = new Date();
     var date=newDate.getDate().toString();
     var month=newDate.getMonth().toString();
@@ -47,7 +48,8 @@ const getCategory = (val) =>{
 
 
  const saveNote = ()=>{
-  if (note) {
+  if (note!="" && description!="" && category!="") {
+    setErrorMessage('')
     let idNote=description+note+category+completeDate+(note.length+1);
     const newNote = { noteId: idNote,description: description, title: note, category: category, noteData: completeDate };
     setNotes([...notes, newNote]);
@@ -55,6 +57,8 @@ const getCategory = (val) =>{
     setNote("");
     setSuccessMessage("Succesfully added");
     window.location.href='http://localhost:3000';
+  }else{
+    setErrorMessage('Please fill out all fields')
   }
  }
  
@@ -63,37 +67,39 @@ const getCategory = (val) =>{
   if(localStorage.getItem("localNotes")){
       const storedList = JSON.parse(localStorage.getItem("localNotes"));
       setNotes(storedList);
-      
-      
   }
 },[])
+
   return (
     <>
     <div className='colored-background container'>
-    <Header />
-    <div className='d-flex justify-content-center'>
-    <Button variant='success' className=' mt-4' onClick={()=> handleShow()}>Add New Note</Button>
+      <Header />
+      <div className='d-flex justify-content-center'>
+      <Button variant='success' className=' mt-4' onClick={()=> handleShow()}>Add New Note</Button>
     </div>
     <div className='row mt-5'>
-    <div className='col-lg-3 '>
-    <Card className='shadow-lg all-notes'>
-        <Card.Body className='note-body'>
-        <input type="search" id='note-search' placeholder="Search for category" size='16' onChange={getData}/>
-    <Button variant='primary' onClick={()=>searchData()}><i className="bi bi-search">Search</i></Button>
-    <p><i>*Metting, School, or specific category of 'other' value</i></p>
-    <p className='mt-4 pt-1 note-lead'>All Notes - {notes.length == 0 ? "Currently no note!" : notes.length==1 ? "You have 1 note" : "You have "+notes.length+" notes"}</p>
+      <div className='col-lg-3 '>
+        <Card className='shadow-lg all-notes'>
+          <Card.Body className='note-body'>
+            <input type="search" id='note-search' placeholder="Search for category" size='16' onChange={getData}/>
+            <Button variant='primary' onClick={()=>searchData()}><i className="bi bi-search">Search</i></Button>
+            <p><i>*Metting, School, or specific category of 'other' value</i></p>
+            <p className='mt-4 pt-1 note-lead'>
+            All Notes - {notes.length == 0 ? "Currently no note!" : notes.length==1 ? "You have 1 note" : "You have "+notes.length+" notes"}
+            </p>
     
     {notes.map((note) => 
             <Note note={note} key={note.noteId}/>)
             }  
+
         </Card.Body>
     </Card>
     </div>
-    <div className='col-lg-9 mt-4 mt-lg-0' >
-      <MyNote search={searchedData} notes={notes}/>
+      <div className='col-lg-9 mt-4 mt-lg-0' >
+        <MyNote search={searchedData} notes={notes}/>
+      </div>
     </div>
-    </div>
-    </div>
+  </div>
     
     <Modal show={showM} onHide={handleClose} className='text-center mt-5'>
   <Modal.Header closeButton>
@@ -107,7 +113,7 @@ const getCategory = (val) =>{
       <textarea className='form-control' rows='5' onChange={(e)=> setDescription(e.target.value)}></textarea>
       <Form.Label>Category: </Form.Label>
       <Form.Select onChange={getCategory}>
-        <option></option>
+        <option value=""></option>
         <option value='Metting'>Metting</option>
         <option>School</option>
         <option value="Other">Other...</option>
@@ -120,6 +126,7 @@ const getCategory = (val) =>{
   </Modal.Body>
   <Modal.Footer className='text-center'>
     <b className='text-success'> {successMessage}</b>
+    <b className='text-danger'>{errorMessage}</b>
     <Button variant="secondary" onClick={handleClose}>
       Close
     </Button>
